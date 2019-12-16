@@ -17,6 +17,7 @@
 		0585F53623A5E0AD0028AF0D /* SearchViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0585F53523A5E0AD0028AF0D /* SearchViewCell.swift */; };
 		0585F53823A5E0EB0028AF0D /* HeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0585F53723A5E0EB0028AF0D /* HeaderCell.swift */; };
 		0585F53B23A5ED130028AF0D /* UILayoutHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0585F53A23A5ED130028AF0D /* UILayoutHelpers.swift */; };
+		0585F53D23A6D56D0028AF0D /* JobDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0585F53C23A6D56D0028AF0D /* JobDetailsViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +54,7 @@
 		0585F53523A5E0AD0028AF0D /* SearchViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewCell.swift; sourceTree = "<group>"; };
 		0585F53723A5E0EB0028AF0D /* HeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderCell.swift; sourceTree = "<group>"; };
 		0585F53A23A5ED130028AF0D /* UILayoutHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILayoutHelpers.swift; sourceTree = "<group>"; };
+		0585F53C23A6D56D0028AF0D /* JobDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JobDetailsViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,6 +105,7 @@
 		0585F50123A5B3580028AF0D /* GitHubJobSearch */ = {
 			isa = PBXGroup;
 			children = (
+				0585F54223A70D780028AF0D /* Playgorund */,
 				0585F53923A5ECFC0028AF0D /* Helpers */,
 				0585F53423A5E0610028AF0D /* Controllers */,
 				0585F53223A5E0400028AF0D /* Views */,
@@ -146,6 +149,7 @@
 			isa = PBXGroup;
 			children = (
 				0585F50623A5B3580028AF0D /* MainViewController.swift */,
+				0585F53C23A6D56D0028AF0D /* JobDetailsViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -156,6 +160,13 @@
 				0585F53A23A5ED130028AF0D /* UILayoutHelpers.swift */,
 			);
 			path = Helpers;
+			sourceTree = "<group>";
+		};
+		0585F54223A70D780028AF0D /* Playgorund */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Playgorund;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -291,6 +302,7 @@
 				0585F53623A5E0AD0028AF0D /* SearchViewCell.swift in Sources */,
 				0585F53823A5E0EB0028AF0D /* HeaderCell.swift in Sources */,
 				0585F50723A5B3580028AF0D /* MainViewController.swift in Sources */,
+				0585F53D23A6D56D0028AF0D /* JobDetailsViewController.swift in Sources */,
 				0585F50323A5B3580028AF0D /* AppDelegate.swift in Sources */,
 				0585F50523A5B3580028AF0D /* SceneDelegate.swift in Sources */,
 				0585F53B23A5ED130028AF0D /* UILayoutHelpers.swift in Sources */,

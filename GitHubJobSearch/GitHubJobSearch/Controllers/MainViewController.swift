@@ -52,6 +52,11 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
            return .init(width: view.frame.width - 20, height: 180)
        }
     
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let detailVC = JobDetailsViewController()
+        navigationController?.pushViewController(detailVC, animated: true)
+    }
+    
     
    init() {
         super.init(collectionViewLayout: UICollectionViewFlowLayout())
