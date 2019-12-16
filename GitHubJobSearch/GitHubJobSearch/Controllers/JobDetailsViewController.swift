@@ -37,8 +37,8 @@ class JobDetailsViewController: UIViewController {
          return button
      }()
     
-    let companyURL: String?
-    let applyURL: String?
+    var companyURL = ""
+    let applyURL = ""
     
     @objc func handleCompanyWebsite() {
 
