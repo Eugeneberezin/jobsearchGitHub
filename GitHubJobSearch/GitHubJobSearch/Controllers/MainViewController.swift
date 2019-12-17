@@ -19,18 +19,53 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
         collectionView.backgroundColor = .lightGray
         collectionView.register(SearchViewCell.self, forCellWithReuseIdentifier: cellId)
         collectionView.register(HeaderCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerCellId)
+    
         
     }
     
+    fileprivate var jobResults = [Result]()
+    
+    
+    @objc func fetchJobs() {
+        let header = HeaderCell()
+        var jobDescription = ""
+        var searchCity = ""
+        
+        Service.shared.fetchJobs(description: jobDescription , city: searchCity) {[weak self] (result, err) in
+            if let err = err {
+                print("Failed to fetch jobs:", err)
+                return
+            }
+            
+            DispatchQueue.main.async {
+                jobDescription = header.positionTextField.text ?? ""
+                searchCity = header.cityTextField.text ?? ""
+                
+                print(jobDescription, searchCity)
+            }
+            
+            self?.jobResults = result
+            
+            DispatchQueue.main.async {
+                self?.collectionView.reloadData()
+            }
+            
+           
+        }
+    }
+    
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 5
+        return jobResults.count
     }
     
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
            let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: headerCellId, for: indexPath) as! HeaderCell
         //header.layer.cornerRadius = 12
+        header.searchButton.addTarget(self, action: #selector(fetchJobs), for: .touchUpInside)
            return header
        }
+    
+    
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return UIEdgeInsets(top: 10.0, left: 1.0, bottom: 1.0, right: 1.0)
@@ -43,6 +78,8 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! SearchViewCell
         cell.layer.cornerRadius = 12
+        let jobResult = jobResults[indexPath.item]
+        cell.jobResult = jobResult
         return cell
     }
     

@@ -7,11 +7,28 @@
 //
 
 import UIKit
+import SDWebImage
 
 class SearchViewCell: UICollectionViewCell {
     
+    var jobResult: Result! {
+        didSet {
+            companyleLabel.text = jobResult.company
+            titleLabel.text = jobResult.title
+            typeLabel.text = jobResult.type
+            locationLabel.text = jobResult.location
+            guard let url = URL(string: jobResult.company_logo ?? "") else { return }
+            logoImageView.sd_setImage(with: url)
+        }
+    }
     
-    let logoImageView = AspectFitImageView(image: UIImage(named: "logo"), cornerRadius: 12)
+    
+    let logoImageView: UIImageView = {
+        let iv = UIImageView()
+        iv.layer.cornerRadius = 12
+        iv.contentMode = .scaleAspectFit
+        return iv
+    }() //AspectFitImageView(image: UIImage(named: "logo"), cornerRadius: 12)
     
     let companyleLabel: UILabel = {
         let label = UILabel()
@@ -26,6 +43,13 @@ class SearchViewCell: UICollectionViewCell {
          label.font = .systemFont(ofSize: 16)
          return label
      }()
+    
+    let typeLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Full time"
+        label.font = .systemFont(ofSize: 16)
+        return label
+    }()
     
     let urlLabel: UILabel = {
          let label = UILabel()
@@ -48,8 +72,8 @@ class SearchViewCell: UICollectionViewCell {
         super.init(frame: frame)
         backgroundColor = .white
         addSubview(logoImageView)
-        logoImageView.anchor(top: topAnchor, leading: nil, bottom: nil, trailing: trailingAnchor, padding: .init(top: 10, left: 10, bottom: 0, right: 0), size: .init(width: 80, height: 100))
-        let stackView = UIStackView(arrangedSubviews: [companyleLabel, titleLabel, urlLabel, locationLabel
+        logoImageView.anchor(top: topAnchor, leading: nil, bottom: nil, trailing: trailingAnchor, padding: .init(top: 10, left: 10, bottom: 0, right: 10), size: .init(width: 80, height: 100))
+        let stackView = UIStackView(arrangedSubviews: [companyleLabel, titleLabel, typeLabel, locationLabel
         ])
         addSubview(stackView)
         stackView.anchor(top: topAnchor, leading: leadingAnchor, bottom: nil, trailing: logoImageView.leadingAnchor, padding: .init(top: 10, left: 20, bottom: 0, right: 20))

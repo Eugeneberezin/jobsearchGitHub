@@ -20,6 +20,9 @@
 		0585F53D23A6D56D0028AF0D /* JobDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0585F53C23A6D56D0028AF0D /* JobDetailsViewController.swift */; };
 		0585F54623A71B3D0028AF0D /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = 0585F54523A71B3D0028AF0D /* SDWebImage */; };
 		0585F54823A71B3D0028AF0D /* SDWebImageMapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 0585F54723A71B3D0028AF0D /* SDWebImageMapKit */; };
+		0585F54A23A85D8C0028AF0D /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0585F54923A85D8C0028AF0D /* StringExtensions.swift */; };
+		0585F54C23A865510028AF0D /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0585F54B23A865510028AF0D /* Model.swift */; };
+		0585F55023A868D10028AF0D /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0585F54F23A868D10028AF0D /* Service.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,6 +61,9 @@
 		0585F53A23A5ED130028AF0D /* UILayoutHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILayoutHelpers.swift; sourceTree = "<group>"; };
 		0585F53C23A6D56D0028AF0D /* JobDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JobDetailsViewController.swift; sourceTree = "<group>"; };
 		0585F54323A70DD10028AF0D /* URLSTring.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; name = URLSTring.playground; path = ../../../URLSTring.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		0585F54923A85D8C0028AF0D /* StringExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtensions.swift; sourceTree = "<group>"; };
+		0585F54B23A865510028AF0D /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
+		0585F54F23A868D10028AF0D /* Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -110,6 +116,8 @@
 		0585F50123A5B3580028AF0D /* GitHubJobSearch */ = {
 			isa = PBXGroup;
 			children = (
+				0585F54E23A868A70028AF0D /* Service */,
+				0585F54D23A865590028AF0D /* Models */,
 				0585F54223A70D780028AF0D /* Playgorund */,
 				0585F53923A5ECFC0028AF0D /* Helpers */,
 				0585F53423A5E0610028AF0D /* Controllers */,
@@ -163,6 +171,7 @@
 			isa = PBXGroup;
 			children = (
 				0585F53A23A5ED130028AF0D /* UILayoutHelpers.swift */,
+				0585F54923A85D8C0028AF0D /* StringExtensions.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -173,6 +182,22 @@
 				0585F54323A70DD10028AF0D /* URLSTring.playground */,
 			);
 			path = Playgorund;
+			sourceTree = "<group>";
+		};
+		0585F54D23A865590028AF0D /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				0585F54B23A865510028AF0D /* Model.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		0585F54E23A868A70028AF0D /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				0585F54F23A868D10028AF0D /* Service.swift */,
+			);
+			path = Service;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -312,11 +337,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0585F54C23A865510028AF0D /* Model.swift in Sources */,
+				0585F54A23A85D8C0028AF0D /* StringExtensions.swift in Sources */,
 				0585F53623A5E0AD0028AF0D /* SearchViewCell.swift in Sources */,
 				0585F53823A5E0EB0028AF0D /* HeaderCell.swift in Sources */,
 				0585F50723A5B3580028AF0D /* MainViewController.swift in Sources */,
 				0585F53D23A6D56D0028AF0D /* JobDetailsViewController.swift in Sources */,
 				0585F50323A5B3580028AF0D /* AppDelegate.swift in Sources */,
+				0585F55023A868D10028AF0D /* Service.swift in Sources */,
 				0585F50523A5B3580028AF0D /* SceneDelegate.swift in Sources */,
 				0585F53B23A5ED130028AF0D /* UILayoutHelpers.swift in Sources */,
 			);
