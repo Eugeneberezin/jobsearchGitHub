@@ -31,6 +31,9 @@ class HeaderCell: UICollectionViewCell {
         return button
     }()
     
+    let mainVC = MainViewController()
+    
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .white

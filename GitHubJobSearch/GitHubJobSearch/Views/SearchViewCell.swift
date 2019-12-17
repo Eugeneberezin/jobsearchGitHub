@@ -33,7 +33,9 @@ class SearchViewCell: UICollectionViewCell {
     let companyleLabel: UILabel = {
         let label = UILabel()
         label.text = "Awesome Company"
-        label.font = .systemFont(ofSize: 16)
+        label.font = .boldSystemFont(ofSize: 16)
+        label.numberOfLines = 0
+        label.textColor = .label
         return label
     }()
     
@@ -41,6 +43,8 @@ class SearchViewCell: UICollectionViewCell {
          let label = UILabel()
          label.text = "iOS developer"
          label.font = .systemFont(ofSize: 16)
+        label.numberOfLines = 0
+        label.textColor = .label
          return label
      }()
     
@@ -48,6 +52,7 @@ class SearchViewCell: UICollectionViewCell {
         let label = UILabel()
         label.text = "Full time"
         label.font = .systemFont(ofSize: 16)
+        label.textColor = .label
         return label
     }()
     
@@ -63,6 +68,7 @@ class SearchViewCell: UICollectionViewCell {
          let label = UILabel()
          label.text = "Seattle, WA"
          label.font = .systemFont(ofSize: 16)
+        label.textColor = .label
          return label
      }()
     

@@ -8,10 +8,11 @@
 
 import UIKit
 
-class MainViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
+class MainViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout, UISearchBarDelegate {
 
     fileprivate let cellId = "searchCellId"
     fileprivate let headerCellId = "header"
+    let searchController = UISearchController(searchResultsController: nil)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -19,30 +20,84 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
         collectionView.backgroundColor = .lightGray
         collectionView.register(SearchViewCell.self, forCellWithReuseIdentifier: cellId)
         collectionView.register(HeaderCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerCellId)
-    
+        setupSearchBar()
         
     }
+    
+    
+
+    
     
     fileprivate var jobResults = [Result]()
     
     
-    @objc func fetchJobs() {
-        let header = HeaderCell()
-        var jobDescription = ""
-        var searchCity = ""
+    fileprivate func setupSearchBar() {
+        definesPresentationContext = true
+        navigationItem.searchController = self.searchController
+        navigationItem.hidesSearchBarWhenScrolling = false
+        searchController.searchBar.delegate = self
+        //searchController.searchBar.text = "Black"
+        searchController.searchBar.tintColor = .lightGray
+        let textFieldInsideSearchBar = searchController.searchBar.value(forKey: "searchField") as? UITextField
+        textFieldInsideSearchBar?.textColor = .black
+        textFieldInsideSearchBar?.placeholder = "Position"
+        let myTextField: UISearchBar = UISearchBar(frame: CGRect(x: 10, y: searchController.searchBar.frame.height + 50, width: view.frame.size.width - 30 , height: 50))
+               myTextField.value(forKey: "searchField")
+               myTextField.backgroundColor = UIColor.purple
+               myTextField.placeholder = "Location"
+               myTextField.layer.cornerRadius = 12
+               
+               searchController.view.addSubview(myTextField)
+    
+    }
+    
+    
+    
+//    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+//
+//        
+//        
+//    }
+    
+    
+    var timer: Timer?
+    
+    
+    
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        print(searchText)
         
-        Service.shared.fetchJobs(description: jobDescription , city: searchCity) {[weak self] (result, err) in
+        // introduce some delay before performing the search
+        // throttling the search
+        
+        timer?.invalidate()
+        
+        timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false, block: { (_) in
+            
+            // this will actually fire my search
+            Service.shared.fetchJobs(description: searchText, city: searchText) { (result, err) in
+                self.jobResults = result
+                
+                
+                DispatchQueue.main.async {
+                    self.collectionView.reloadData()
+                }
+            }
+            
+        })
+    }
+    
+    
+    @objc func fetchJobs(description: String, city: String) {
+        
+        Service.shared.fetchJobs(description: city , city: city) {[weak self] (result, err) in
             if let err = err {
                 print("Failed to fetch jobs:", err)
                 return
             }
             
-            DispatchQueue.main.async {
-                jobDescription = header.positionTextField.text ?? ""
-                searchCity = header.cityTextField.text ?? ""
-                
-                print(jobDescription, searchCity)
-            }
+           
             
             self?.jobResults = result
             
@@ -58,22 +113,14 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
         return jobResults.count
     }
     
-    override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-           let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: headerCellId, for: indexPath) as! HeaderCell
-        //header.layer.cornerRadius = 12
-        header.searchButton.addTarget(self, action: #selector(fetchJobs), for: .touchUpInside)
-           return header
-       }
-    
+
     
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return UIEdgeInsets(top: 10.0, left: 1.0, bottom: 1.0, right: 1.0)
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return .init(width: view.frame.width, height: 150)
-    }
+
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! SearchViewCell
