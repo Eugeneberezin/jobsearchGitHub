@@ -46,6 +46,7 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
                myTextField.backgroundColor = UIColor.purple
                myTextField.placeholder = "Location"
                myTextField.layer.cornerRadius = 12
+        myTextField.delegate = self
                
                searchController.view.addSubview(myTextField)
     
@@ -55,8 +56,8 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
     
 //    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
 //
-//        
-//        
+//
+//
 //    }
     
     
