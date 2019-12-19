@@ -17,17 +17,14 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "GitHub Jobs"
-        collectionView.backgroundColor = .lightGray
+        collectionView.backgroundColor = UIColor(named: "background")
         collectionView.register(SearchViewCell.self, forCellWithReuseIdentifier: cellId)
         collectionView.register(HeaderCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerCellId)
         setupSearchBar()
         
     }
     
-    
 
-    
-    
     fileprivate var jobResults = [Result]()
     
     
@@ -41,25 +38,18 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
         let textFieldInsideSearchBar = searchController.searchBar.value(forKey: "searchField") as? UITextField
         textFieldInsideSearchBar?.textColor = .black
         textFieldInsideSearchBar?.placeholder = "Position"
-        let myTextField: UISearchBar = UISearchBar(frame: CGRect(x: 10, y: searchController.searchBar.frame.height + 50, width: view.frame.size.width - 30 , height: 50))
-               myTextField.value(forKey: "searchField")
-               myTextField.backgroundColor = UIColor.purple
-               myTextField.placeholder = "Location"
-               myTextField.layer.cornerRadius = 12
-        myTextField.delegate = self
-               
-               searchController.view.addSubview(myTextField)
-    
+        let citySearchBar: UISearchBar = UISearchBar(frame: CGRect(x: 10, y: searchController.searchBar.frame.height + 50, width: view.frame.size.width - 30 , height: 50))
+        citySearchBar.value(forKey: "searchField")
+        citySearchBar.backgroundColor = UIColor.purple
+        citySearchBar.placeholder = "Location"
+        citySearchBar.layer.cornerRadius = 12
+        citySearchBar.delegate = self
+        
+        searchController.view.addSubview(citySearchBar)
+        
     }
     
-    
-    
-//    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-//
-//
-//
-//    }
-    
+
     
     var timer: Timer?
     
@@ -97,8 +87,6 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
                 print("Failed to fetch jobs:", err)
                 return
             }
-            
-           
             
             self?.jobResults = result
             
@@ -139,6 +127,7 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let detailVC = JobDetailsViewController()
+        detailVC.jobResult = jobResults[indexPath.item]
         navigationController?.pushViewController(detailVC, animated: true)
     }
     

@@ -11,12 +11,32 @@ import SafariServices
 
 class JobDetailsViewController: UIViewController {
     
-    let logoImageView = AspectFitImageView(image: UIImage(named: "logo"), cornerRadius: 12)
+    var jobResult: Result! {
+        didSet {
+            companyleLabel.text = jobResult.company
+            titleLabel.text = jobResult.title
+            typeLabel.text = jobResult.type
+            locationLabel.text = jobResult.location
+            guard let url = URL(string: jobResult.company_logo ?? "") else { return }
+            logoImageView.sd_setImage(with: url)
+            companyURL = jobResult.company_url ?? ""
+            htmlText = jobResult.description ?? ""
+            let descriptionTHML = convertHTML(text: htmlText, attributedText: &descriptionTextView.attributedText)
+            descriptionTextView.attributedText = descriptionTHML
+            applyURL = jobResult.url ?? ""
+            print("URL>>>>>>> ", applyURL)
+            
+        }
+    }
+    
+
+    
+    let logoImageView = AspectFitImageView(image: UIImage(named: "JRSTIux"), cornerRadius: 12)
     
     let companyleLabel: UILabel = {
         let label = UILabel()
         label.text = "Awesome Company"
-        label.font = .systemFont(ofSize: 16)
+        label.font = .boldSystemFont(ofSize: 17)
         return label
     }()
     
@@ -27,24 +47,34 @@ class JobDetailsViewController: UIViewController {
          return label
      }()
     
+    let typeLabel: UILabel = {
+           let label = UILabel()
+           label.text = "Full time"
+           label.font = .systemFont(ofSize: 16)
+           label.textColor = .label
+           return label
+       }()
+    
     let urlButton: UIButton = {
         let button = UIButton(type: .system)
          button.backgroundColor = .systemBlue
          button.setTitle("Visit Company's Website", for: .normal)
          button.tintColor = .white
+         button.backgroundColor = UIColor(named: "buttonColor")
          button.layer.cornerRadius = 15
         button.addTarget(self, action: #selector(handleCompanyWebsite), for: .touchUpInside)
          return button
      }()
     
     var companyURL = ""
-    let applyURL = ""
+    var applyURL = ""
     
     @objc func handleCompanyWebsite() {
 
-        guard let url = URL(string: "https://eugene-berezin-iosdev.com/") else { return }
+        guard let url = URL(string: companyURL) else { return }
         let svc = SFSafariViewController(url: url)
         self.present(svc, animated: true)
+        print("THIS IS COMPANY URL>>>  ",url)
         
     }
     
@@ -57,32 +87,47 @@ class JobDetailsViewController: UIViewController {
     
     
     var htmlText = """
-                       BabyCenter, the world's number one digital parenting resource, is seeking a talented hands-on Software Architect with a passion for building world-class experiences for over 100 million people monthly.  BabyCenter is a subsidiary of J2 Global under the Everyday Health Group’s Parenting &amp; Pregnancy vertical.</p>\n<p>As Software Architect, you will design and architect stable, scalable and secure web applications and services with state-of-the-art cloud technologies. You are a hands-on lead developer in the implementation of new solutions, prototypes, as well as actively contributing to the ideation and design phases of each project.  You will work with an inspired and inquisitive team of technologists who are already developing and deploying applications to the highest standards.</p>\n<p>You have experience building large-capacity consumer-facing web services and sites, experience working with new technologies, and a desire to build great products for new and expecting parents.</p>\n<p>This is a full-time position at our location in San Francisco, and reports to the Director of Engineering.</p>\n<p>Pursuant to the San Francisco Fair Chance Ordinance, we will consider for employment qualified applicants with arrest and conviction records.</p>\n<p>Position Overview</p>\n<p>The BabyCenter Software Architect is responsible for the construction of consumer and advertising software solutions, using a team-based approach and collaborating with all functions on the team to ensure that each feature delivered is of the highest quality and conforms to BabyCenter engineering standards.</p>\n<p>Roles &amp; Responsibilities</p>\n<p>Lead and architect cloud solutions for scalable, highly available, secure web services and websites on AWS platform\nPlan and manage initiatives to migrate systems to AWS platform\nPartner with Engineering managers to build the technological vision, drives technology strategy and influences business partners and technology leaders on strategic direction\nDesign, implementation, and maintenance of new and existing features\nParticipate in defining and improving coding standards\nCollaborate with other software engineers to ensure that solutions are built in a consistent framework to a high-quality standard\nCollaborate with product, marketing, and sales teams to develop new products and features, gather requirements, and scope work\nMentor, coach, and support engineers in their technical growth and learning industry best practices\nRequirements</p>\n<p>8+ years web development experience, with 3+ years of experience as cloud solutions architect\nDeep understanding of frontend and backend web architecture and frameworks\nExpertise in services and tools on AWS platform, including Lambda, API gateway, SQS, SNS and S3, Kinesis, DynamoDB, Redshift\nHands on with Relational Database, NoSQL and Columnar Storage.\nProficient in modern web technologies including Java, Node.js and ReactJS\nExperience with designing and re-architecting application for cloud platforms running in AWS\nWorking knowledge of building RESTful web services in a service-oriented-architecture environment using cloud infrastructures\nAdept in computer science fundamentals, distributed processing, algorithms, problem solving, design patterns, and OO design\nExperience structuring the work of architectural efforts, entrust, guide and mentor other team members.\nExcellent verbal and written communication skills. Superior listening skills. Able to tailor your message to the audience and integrate feedback.\nDemonstrable ability to create clear, accessible, visual explanations of system architecture.\nQualifications</p>\n<p>Master of computer science degree or equivalent working experience\nLarge-scale consumer internet development experience</p>\n
+                       
                    """
     
     
-    func convertHTML() -> NSAttributedString  {
-        let data = Data(htmlText.utf8)
-        if let attributedString = try? NSAttributedString(data: data, options: [.documentType: NSAttributedString.DocumentType.html], documentAttributes: nil) {
-            descriptionTextView.attributedText = attributedString
+    func convertHTML(text: String,  attributedText: inout NSAttributedString) -> NSAttributedString  {
+        let data = Data(text.utf8)
+        let options: [NSAttributedString.DocumentReadingOptionKey: Any] = [
+            .documentType: NSAttributedString.DocumentType.html,
+            .characterEncoding: String.Encoding.utf8.rawValue
+        ]
+        
+        if let attributedString = try? NSMutableAttributedString(data: data, options: options, documentAttributes: nil) {
+            attributedText = attributedString
+            
             return attributedString
         }
-        return descriptionTextView.attributedText
+        let colorAttribute: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor(named: "textColor")]
+        
+
+        return attributedText
     }
+    
+    
     
 
     let descriptionTextView: UITextView = {
         let textView = UITextView()
         textView.font = .systemFont(ofSize: 14)
         textView.textAlignment = .left
+        textView.backgroundColor = UIColor(named: "textView")
         textView.isEditable = false
+        textView.layer.cornerRadius = 12
         return textView
     }()
     
+    
     let applyButton: UIButton = {
-       let button = UIButton(type: .system)
+        let button = UIButton(type: .system)
         button.backgroundColor = .systemBlue
         button.setTitle("Apply", for: .normal)
+        button.backgroundColor = UIColor(named: "buttonColor")
         button.tintColor = .white
         button.layer.cornerRadius = 15
         button.addTarget(self, action: #selector(handleApply), for: .touchUpInside)
@@ -90,20 +135,31 @@ class JobDetailsViewController: UIViewController {
     }()
     
     @objc func handleApply() {
-        guard let url = URL(string: "https://boards.greenhouse.io/granular/jobs/1586132") else { return }
+        guard let url = URL(string: applyURL) else { return }
         let svc = SFSafariViewController(url: url)
         self.present(svc, animated: true)
+        print("THIS IS APPLY URL >>", url)
+    }
+    
+    
+    var pinchGesture = UIPinchGestureRecognizer()
+    
+    @objc func pinchText(sender: UIPinchGestureRecognizer) {
+        var pointSize = descriptionTextView.font?.pointSize
+        pointSize = ((sender.velocity > 0) ? 1 : -1) * 1 + pointSize!;
+        descriptionTextView.font = UIFont( name: "arial", size: (pointSize)!)
+        
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        descriptionTextView.attributedText = convertHTML()
-        view.backgroundColor = .white
+        pinchGesture = UIPinchGestureRecognizer(target: self, action:#selector(pinchText(sender:)))
+        descriptionTextView.addGestureRecognizer(pinchGesture)
+        view.backgroundColor = UIColor(named: "cardColor")
         view.addSubview(logoImageView)
-        logoImageView.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: nil, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 10, left: 10, bottom: 0, right: 0), size: .init(width: 80, height: 100))
+        logoImageView.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: nil, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 10, left: 10, bottom: 0, right: 10), size: .init(width: 80, height: 100))
         
-        
-        let stackView = UIStackView(arrangedSubviews: [companyleLabel, titleLabel, urlButton, locationLabel
+        let stackView = UIStackView(arrangedSubviews: [companyleLabel, titleLabel, typeLabel, locationLabel,urlButton
         ])
         view.addSubview(stackView)
         stackView.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: view.leadingAnchor, bottom: nil, trailing: logoImageView.leadingAnchor, padding: .init(top: 10, left: 20, bottom: 20, right: 20))
@@ -122,3 +178,5 @@ class JobDetailsViewController: UIViewController {
     
 
 }
+
+
