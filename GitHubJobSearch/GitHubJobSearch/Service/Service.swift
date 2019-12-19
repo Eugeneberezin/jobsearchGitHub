@@ -33,6 +33,7 @@ class Service {
                         completion(searchResult, nil)
                         
                         //print(searchResult)
+                        print(urlString)
 
                      } catch let jsonErr {
                          print("Failed to decode json:", jsonErr)
