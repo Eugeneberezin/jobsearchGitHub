@@ -24,8 +24,6 @@ class JobDetailsViewController: UIViewController {
             let descriptionTHML = convertHTML(text: htmlText, attributedText: &descriptionTextView.attributedText)
             descriptionTextView.attributedText = descriptionTHML
             applyURL = jobResult.url ?? ""
-            print("URL>>>>>>> ", applyURL)
-            
         }
     }
     
@@ -57,25 +55,28 @@ class JobDetailsViewController: UIViewController {
     
     let urlButton: UIButton = {
         let button = UIButton(type: .system)
-         button.backgroundColor = .systemBlue
-         button.setTitle("Visit Company's Website", for: .normal)
-         button.tintColor = .white
-         button.backgroundColor = UIColor(named: "buttonColor")
-         button.layer.cornerRadius = 15
+        button.backgroundColor = .systemBlue
+        button.setTitle("Visit Company's Website", for: .normal)
+        button.tintColor = .white
+        button.backgroundColor = UIColor(named: "buttonColor")
+        button.layer.cornerRadius = 15
         button.addTarget(self, action: #selector(handleCompanyWebsite), for: .touchUpInside)
-         return button
-     }()
+        return button
+    }()
     
     var companyURL = ""
     var applyURL = ""
     
     @objc func handleCompanyWebsite() {
-
+        if companyURL == "" {
+            let ac = UIAlertController(title: "Company website is not available", message: nil, preferredStyle: .alert)
+            ac.addAction(UIAlertAction(title: "OK", style: .default))
+            present(ac, animated: true)
+        }
         guard let url = URL(string: companyURL) else { return }
         let svc = SFSafariViewController(url: url)
         self.present(svc, animated: true)
         print("THIS IS COMPANY URL>>>  ",url)
-        
     }
     
     let locationLabel: UILabel = {
@@ -103,9 +104,7 @@ class JobDetailsViewController: UIViewController {
             
             return attributedString
         }
-        let colorAttribute: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor(named: "textColor")]
-        
-
+    
         return attributedText
     }
     
@@ -135,6 +134,12 @@ class JobDetailsViewController: UIViewController {
     }()
     
     @objc func handleApply() {
+        if applyURL == "" {
+            let ac = UIAlertController(title: "Link is not available", message: nil, preferredStyle: .alert)
+            ac.addAction(UIAlertAction(title: "OK", style: .default))
+            present(ac, animated: true)
+        }
+        
         guard let url = URL(string: applyURL) else { return }
         let svc = SFSafariViewController(url: url)
         self.present(svc, animated: true)

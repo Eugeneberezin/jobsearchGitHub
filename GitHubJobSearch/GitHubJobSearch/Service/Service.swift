@@ -32,7 +32,7 @@ class Service {
                          let searchResult = try JSONDecoder().decode([Result].self, from: data)
                         completion(searchResult, nil)
                         
-                        print(searchResult)
+                        //print(searchResult)
 
                      } catch let jsonErr {
                          print("Failed to decode json:", jsonErr)
