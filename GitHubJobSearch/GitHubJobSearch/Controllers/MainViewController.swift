@@ -67,7 +67,7 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
             timer?.invalidate()
             
             
-                timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false, block: { (_) in
+                timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false, block: { (_) in
 
                     // this will actually fire my search
                     Service.shared.fetchJobs(description: position, city: city) { (result, err) in
