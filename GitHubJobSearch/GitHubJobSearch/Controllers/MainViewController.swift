@@ -27,25 +27,28 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
 
     fileprivate var jobResults = [Result]()
     
-    
+    let citySearchBar = UISearchBar()
+        
+
     fileprivate func setupSearchBar() {
+        
         definesPresentationContext = true
         navigationItem.searchController = self.searchController
         navigationItem.hidesSearchBarWhenScrolling = false
         searchController.searchBar.delegate = self
-        //searchController.searchBar.text = "Black"
         searchController.searchBar.tintColor = .lightGray
         let textFieldInsideSearchBar = searchController.searchBar.value(forKey: "searchField") as? UITextField
-        textFieldInsideSearchBar?.textColor = .black
+        textFieldInsideSearchBar?.textColor = UIColor(named: "textColor")
         textFieldInsideSearchBar?.placeholder = "Position"
-        let citySearchBar: UISearchBar = UISearchBar(frame: CGRect(x: 10, y: searchController.searchBar.frame.height + 50, width: view.frame.size.width - 30 , height: 50))
+        textFieldInsideSearchBar?.tag = 0
+        searchController.view.addSubview(citySearchBar)
+        citySearchBar.frame =  CGRect(x: 10, y: searchController.searchBar.frame.height + 50, width: view.frame.size.width - 30 , height: 50)
         citySearchBar.value(forKey: "searchField")
-        citySearchBar.backgroundColor = UIColor.purple
+        citySearchBar.backgroundColor = UIColor(named: "background")
         citySearchBar.placeholder = "Location"
         citySearchBar.layer.cornerRadius = 12
         citySearchBar.delegate = self
-        
-        searchController.view.addSubview(citySearchBar)
+        citySearchBar.tag = 2
         
     }
     
@@ -57,27 +60,38 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
     
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        print(searchText)
         
-        // introduce some delay before performing the search
-        // throttling the search
         
-        timer?.invalidate()
         
-        timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false, block: { (_) in
+        if let position = searchController.searchBar.text , let city = citySearchBar.text  {
+            timer?.invalidate()
             
-            // this will actually fire my search
-            Service.shared.fetchJobs(description: searchText, city: searchText) { (result, err) in
-                self.jobResults = result
-                
-                
-                DispatchQueue.main.async {
-                    self.collectionView.reloadData()
-                }
-            }
             
-        })
+                timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false, block: { (_) in
+
+                    // this will actually fire my search
+                    Service.shared.fetchJobs(description: position, city: city) { (result, err) in
+                        self.jobResults = result
+
+
+                        DispatchQueue.main.async {
+                            self.collectionView.reloadData()
+                        }
+                    }
+
+                })
+            
+            
+            print("This is city", city)
+            print("This is position,", position)
+            
+        }
+        
+        
     }
+    
+   
+    
     
     
     @objc func fetchJobs(description: String, city: String) {
